@@ -3,20 +3,48 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Pellazgo API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: businesses
+    description: Business directory
+  - name: products
+    description: Product catalog
+  - name: categories
+    description: Categories
+  - name: offers
+    description: Deals and offers
+  - name: reviews
+    description: Reviews
+  - name: loyalty
+    description: Loyalty program
+  - name: giftcards
+    description: Gift cards
+  - name: blog
+    description: Blog posts
+  - name: cart
+    description: Shopping cart
+  - name: orders
+    description: Orders
+  - name: favorites
+    description: User favorites
+  - name: profile
+    description: User profile
+  - name: ai
+    description: AI assistant
+  - name: dashboard
+    description: Dashboard summaries
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +52,667 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  # ── DASHBOARD ──────────────────────────────────────────────
+  /dashboard/stats:
+    get:
+      operationId: getDashboardStats
+      tags: [dashboard]
+      summary: Get home feed stats summary
+      responses:
+        "200":
+          description: Dashboard stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardStats"
+
+  # ── CATEGORIES ─────────────────────────────────────────────
+  /categories:
+    get:
+      operationId: listCategories
+      tags: [categories]
+      summary: List all categories
+      responses:
+        "200":
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+
+  # ── BUSINESSES ─────────────────────────────────────────────
+  /businesses:
+    get:
+      operationId: listBusinesses
+      tags: [businesses]
+      summary: List businesses with optional search/filter
+      parameters:
+        - in: query
+          name: search
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: category
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: featured
+          schema:
+            type: boolean
+          required: false
+      responses:
+        "200":
+          description: List of businesses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Business"
+    post:
+      operationId: createBusiness
+      tags: [businesses]
+      summary: Create a business
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BusinessInput"
+      responses:
+        "201":
+          description: Created business
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Business"
+
+  /businesses/featured:
+    get:
+      operationId: listFeaturedBusinesses
+      tags: [businesses]
+      summary: Get featured businesses for home
+      responses:
+        "200":
+          description: Featured businesses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Business"
+
+  /businesses/{id}:
+    get:
+      operationId: getBusiness
+      tags: [businesses]
+      summary: Get a single business
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Business detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Business"
+        "404":
+          description: Not found
+
+  # ── PRODUCTS ───────────────────────────────────────────────
+  /products:
+    get:
+      operationId: listProducts
+      tags: [products]
+      summary: List products with optional search/filter
+      parameters:
+        - in: query
+          name: search
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: category
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: businessId
+          schema:
+            type: integer
+          required: false
+      responses:
+        "200":
+          description: List of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+
+  /products/featured:
+    get:
+      operationId: listFeaturedProducts
+      tags: [products]
+      summary: Featured products for home
+      responses:
+        "200":
+          description: Featured products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+
+  /products/{id}:
+    get:
+      operationId: getProduct
+      tags: [products]
+      summary: Get a single product
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Product detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          description: Not found
+
+  # ── OFFERS ─────────────────────────────────────────────────
+  /offers:
+    get:
+      operationId: listOffers
+      tags: [offers]
+      summary: List offers and deals
+      parameters:
+        - in: query
+          name: featured
+          schema:
+            type: boolean
+          required: false
+      responses:
+        "200":
+          description: List of offers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Offer"
+
+  /offers/{id}:
+    get:
+      operationId: getOffer
+      tags: [offers]
+      summary: Get a single offer
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Offer detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Offer"
+        "404":
+          description: Not found
+
+  # ── REVIEWS ────────────────────────────────────────────────
+  /reviews:
+    get:
+      operationId: listReviews
+      tags: [reviews]
+      summary: List reviews for a business or product
+      parameters:
+        - in: query
+          name: businessId
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: productId
+          schema:
+            type: integer
+          required: false
+      responses:
+        "200":
+          description: List of reviews
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Review"
+    post:
+      operationId: createReview
+      tags: [reviews]
+      summary: Create a review
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewInput"
+      responses:
+        "201":
+          description: Created review
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+
+  # ── LOYALTY ────────────────────────────────────────────────
+  /loyalty/me:
+    get:
+      operationId: getMyLoyalty
+      tags: [loyalty]
+      summary: Get current user loyalty status
+      responses:
+        "200":
+          description: Loyalty account
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoyaltyAccount"
+
+  /loyalty/tiers:
+    get:
+      operationId: listLoyaltyTiers
+      tags: [loyalty]
+      summary: List all loyalty tiers
+      responses:
+        "200":
+          description: Tiers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LoyaltyTier"
+
+  /loyalty/redeem:
+    post:
+      operationId: redeemPoints
+      tags: [loyalty]
+      summary: Redeem loyalty points
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RedeemPointsInput"
+      responses:
+        "200":
+          description: Redemption result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoyaltyAccount"
+
+  # ── GIFT CARDS ─────────────────────────────────────────────
+  /gift-cards:
+    get:
+      operationId: listGiftCards
+      tags: [giftcards]
+      summary: List my gift cards
+      responses:
+        "200":
+          description: Gift cards
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GiftCard"
+    post:
+      operationId: createGiftCard
+      tags: [giftcards]
+      summary: Purchase a gift card
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GiftCardInput"
+      responses:
+        "201":
+          description: Gift card created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GiftCard"
+
+  /gift-cards/{id}:
+    get:
+      operationId: getGiftCard
+      tags: [giftcards]
+      summary: Get a gift card
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Gift card
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GiftCard"
+        "404":
+          description: Not found
+
+  # ── BLOG ───────────────────────────────────────────────────
+  /blog:
+    get:
+      operationId: listBlogPosts
+      tags: [blog]
+      summary: List blog posts
+      parameters:
+        - in: query
+          name: category
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: search
+          schema:
+            type: string
+          required: false
+      responses:
+        "200":
+          description: Blog posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BlogPost"
+
+  /blog/{id}:
+    get:
+      operationId: getBlogPost
+      tags: [blog]
+      summary: Get a blog post
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Blog post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogPost"
+        "404":
+          description: Not found
+
+  # ── CART ───────────────────────────────────────────────────
+  /cart:
+    get:
+      operationId: getCart
+      tags: [cart]
+      summary: Get the current cart
+      responses:
+        "200":
+          description: Cart
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+
+  /cart/items:
+    post:
+      operationId: addToCart
+      tags: [cart]
+      summary: Add item to cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CartItemInput"
+      responses:
+        "200":
+          description: Updated cart
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+
+  /cart/items/{itemId}:
+    delete:
+      operationId: removeFromCart
+      tags: [cart]
+      summary: Remove item from cart
+      parameters:
+        - in: path
+          name: itemId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Updated cart
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+
+  /cart/clear:
+    delete:
+      operationId: clearCart
+      tags: [cart]
+      summary: Clear the cart
+      responses:
+        "200":
+          description: Empty cart
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+
+  # ── ORDERS ─────────────────────────────────────────────────
+  /orders:
+    get:
+      operationId: listOrders
+      tags: [orders]
+      summary: List user orders
+      responses:
+        "200":
+          description: Orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Order"
+    post:
+      operationId: createOrder
+      tags: [orders]
+      summary: Place an order from cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderInput"
+      responses:
+        "201":
+          description: Order placed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+
+  /orders/{id}:
+    get:
+      operationId: getOrder
+      tags: [orders]
+      summary: Get an order
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Order
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        "404":
+          description: Not found
+
+  # ── FAVORITES ──────────────────────────────────────────────
+  /favorites:
+    get:
+      operationId: listFavorites
+      tags: [favorites]
+      summary: List user favorites
+      responses:
+        "200":
+          description: Favorites
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Favorite"
+    post:
+      operationId: addFavorite
+      tags: [favorites]
+      summary: Add a favorite
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FavoriteInput"
+      responses:
+        "201":
+          description: Favorite added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Favorite"
+
+  /favorites/{id}:
+    delete:
+      operationId: removeFavorite
+      tags: [favorites]
+      summary: Remove a favorite
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Removed
+
+  # ── PROFILE ────────────────────────────────────────────────
+  /profile:
+    get:
+      operationId: getProfile
+      tags: [profile]
+      summary: Get current user profile
+      responses:
+        "200":
+          description: Profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+    patch:
+      operationId: updateProfile
+      tags: [profile]
+      summary: Update user profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserProfileUpdate"
+      responses:
+        "200":
+          description: Updated profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+
+  # ── AI ASSISTANT ───────────────────────────────────────────
+  /ai/chat:
+    get:
+      operationId: getChatHistory
+      tags: [ai]
+      summary: Get AI chat conversation history
+      responses:
+        "200":
+          description: Chat history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ChatMessage"
+    post:
+      operationId: sendChatMessage
+      tags: [ai]
+      summary: Send a message to the AI assistant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatMessageInput"
+      responses:
+        "200":
+          description: AI response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatMessage"
+
+  /ai/chat/clear:
+    delete:
+      operationId: clearChatHistory
+      tags: [ai]
+      summary: Clear AI chat history
+      responses:
+        "204":
+          description: Cleared
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +723,451 @@ components:
       required:
         - status
 
+    DashboardStats:
+      type: object
+      required: [totalBusinesses, totalProducts, totalOffers, featuredBusinessCount, activeLoyaltyPoints]
+      properties:
+        totalBusinesses:
+          type: integer
+        totalProducts:
+          type: integer
+        totalOffers:
+          type: integer
+        featuredBusinessCount:
+          type: integer
+        activeLoyaltyPoints:
+          type: integer
+
+    Category:
+      type: object
+      required: [id, name, slug, icon]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        slug:
+          type: string
+        icon:
+          type: string
+        businessCount:
+          type: integer
+
+    Business:
+      type: object
+      required: [id, name, category, rating, address, imageUrl, isFeatured, isOpen]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        category:
+          type: string
+        description:
+          type: ["string", "null"]
+        address:
+          type: string
+        phone:
+          type: ["string", "null"]
+        website:
+          type: ["string", "null"]
+        imageUrl:
+          type: string
+        rating:
+          type: number
+        reviewCount:
+          type: integer
+        isFeatured:
+          type: boolean
+        isOpen:
+          type: boolean
+        openingHours:
+          type: ["string", "null"]
+        loyaltyPoints:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+
+    BusinessInput:
+      type: object
+      required: [name, category, address, imageUrl]
+      properties:
+        name:
+          type: string
+        category:
+          type: string
+        description:
+          type: string
+        address:
+          type: string
+        phone:
+          type: string
+        website:
+          type: string
+        imageUrl:
+          type: string
+        isFeatured:
+          type: boolean
+        isOpen:
+          type: boolean
+        openingHours:
+          type: string
+
+    Product:
+      type: object
+      required: [id, name, price, imageUrl, businessId, category, inStock]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: ["string", "null"]
+        price:
+          type: number
+        originalPrice:
+          type: ["number", "null"]
+        imageUrl:
+          type: string
+        businessId:
+          type: integer
+        businessName:
+          type: ["string", "null"]
+        category:
+          type: string
+        rating:
+          type: number
+        reviewCount:
+          type: integer
+        inStock:
+          type: boolean
+        isFeatured:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+
+    Offer:
+      type: object
+      required: [id, title, discount, imageUrl, businessId, validUntil, isFeatured]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: ["string", "null"]
+        discount:
+          type: string
+        imageUrl:
+          type: string
+        businessId:
+          type: integer
+        businessName:
+          type: ["string", "null"]
+        validUntil:
+          type: string
+          format: date-time
+        isFeatured:
+          type: boolean
+        category:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    Review:
+      type: object
+      required: [id, rating, comment, authorName, createdAt]
+      properties:
+        id:
+          type: integer
+        rating:
+          type: integer
+        comment:
+          type: string
+        authorName:
+          type: string
+        businessId:
+          type: ["integer", "null"]
+        productId:
+          type: ["integer", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    ReviewInput:
+      type: object
+      required: [rating, comment, authorName]
+      properties:
+        rating:
+          type: integer
+        comment:
+          type: string
+        authorName:
+          type: string
+        businessId:
+          type: integer
+        productId:
+          type: integer
+
+    LoyaltyAccount:
+      type: object
+      required: [id, points, tier, lifetimePoints, streakDays]
+      properties:
+        id:
+          type: integer
+        points:
+          type: integer
+        tier:
+          type: string
+        lifetimePoints:
+          type: integer
+        streakDays:
+          type: integer
+        nextTierPoints:
+          type: integer
+        badges:
+          type: array
+          items:
+            type: string
+
+    LoyaltyTier:
+      type: object
+      required: [name, minPoints, benefits, color]
+      properties:
+        name:
+          type: string
+        minPoints:
+          type: integer
+        benefits:
+          type: array
+          items:
+            type: string
+        color:
+          type: string
+        icon:
+          type: string
+
+    RedeemPointsInput:
+      type: object
+      required: [points]
+      properties:
+        points:
+          type: integer
+
+    GiftCard:
+      type: object
+      required: [id, code, balance, originalAmount, status, createdAt]
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        balance:
+          type: number
+        originalAmount:
+          type: number
+        status:
+          type: string
+        recipientEmail:
+          type: ["string", "null"]
+        message:
+          type: ["string", "null"]
+        expiresAt:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    GiftCardInput:
+      type: object
+      required: [amount]
+      properties:
+        amount:
+          type: number
+        recipientEmail:
+          type: string
+        message:
+          type: string
+
+    BlogPost:
+      type: object
+      required: [id, title, excerpt, category, imageUrl, authorName, readTime, publishedAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        excerpt:
+          type: string
+        content:
+          type: ["string", "null"]
+        category:
+          type: string
+        imageUrl:
+          type: string
+        authorName:
+          type: string
+        readTime:
+          type: integer
+        publishedAt:
+          type: string
+          format: date-time
+
+    Cart:
+      type: object
+      required: [id, items, total, itemCount]
+      properties:
+        id:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/CartItem"
+        total:
+          type: number
+        itemCount:
+          type: integer
+
+    CartItem:
+      type: object
+      required: [id, productId, productName, price, quantity, imageUrl]
+      properties:
+        id:
+          type: integer
+        productId:
+          type: integer
+        productName:
+          type: string
+        price:
+          type: number
+        quantity:
+          type: integer
+        imageUrl:
+          type: string
+
+    CartItemInput:
+      type: object
+      required: [productId, quantity]
+      properties:
+        productId:
+          type: integer
+        quantity:
+          type: integer
+
+    Order:
+      type: object
+      required: [id, status, total, items, createdAt]
+      properties:
+        id:
+          type: integer
+        status:
+          type: string
+        total:
+          type: number
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/CartItem"
+        shippingAddress:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    OrderInput:
+      type: object
+      required: [shippingAddress]
+      properties:
+        shippingAddress:
+          type: string
+
+    Favorite:
+      type: object
+      required: [id, type, createdAt]
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+        businessId:
+          type: ["integer", "null"]
+        productId:
+          type: ["integer", "null"]
+        businessName:
+          type: ["string", "null"]
+        productName:
+          type: ["string", "null"]
+        imageUrl:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    FavoriteInput:
+      type: object
+      required: [type]
+      properties:
+        type:
+          type: string
+        businessId:
+          type: integer
+        productId:
+          type: integer
+
+    UserProfile:
+      type: object
+      required: [id, name, email, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        avatarUrl:
+          type: ["string", "null"]
+        phone:
+          type: ["string", "null"]
+        address:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    UserProfileUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+        avatarUrl:
+          type: string
+
+    ChatMessage:
+      type: object
+      required: [id, role, content, createdAt]
+      properties:
+        id:
+          type: integer
+        role:
+          type: string
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    ChatMessageInput:
+      type: object
+      required: [content]
+      properties:
+        content:
+          type: string

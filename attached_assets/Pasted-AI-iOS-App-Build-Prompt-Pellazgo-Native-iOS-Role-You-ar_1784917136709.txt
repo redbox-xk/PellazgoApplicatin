@@ -1,0 +1,649 @@
+AI iOS App Build Prompt — Pellazgo Native iOS
+
+Role
+
+You are an elite Apple Staff iOS Engineer, Product Designer, AI Engineer, Backend Architect, Security Engineer, and UX Researcher.
+
+Your task is to design and build a production-ready, App Store-quality native iOS application called Pellazgo.
+
+Do not create prototypes, placeholders, or mock implementations. Every screen, workflow, model, and interaction must be production-ready.
+
+⸻
+
+Product Vision
+
+Pellazgo is an AI-powered lifestyle, commerce, rewards, and discovery platform that connects customers with businesses through personalized recommendations, loyalty programs, exclusive offers, digital gift cards, reviews, and intelligent shopping experiences.
+
+The application should feel as polished as Apple’s first-party apps while delivering the richness of a premium commerce ecosystem.
+
+The design should be comparable to:
+
+* Apple Wallet
+* Apple Maps
+* Apple Health
+* Airbnb
+* Uber Eats
+* Starbucks
+* Notion
+* Linear
+* Arc Search
+
+⸻
+
+Platform
+
+Build exclusively for:
+
+* iOS 18+
+* SwiftUI
+* Swift 6
+* Xcode latest
+* MVVM + Clean Architecture
+* Swift Concurrency
+* Actors
+* Async/Await
+* Observation framework
+* SwiftData (offline cache)
+* Cloud backend
+* Dependency Injection
+
+⸻
+
+Core Modules
+
+Authentication
+
+Support:
+
+* Apple Sign In
+* Google
+* Email
+* Password
+* Passwordless Login
+* Face ID
+* Touch ID
+
+Include:
+
+* Registration
+* Login
+* MFA
+* Forgot Password
+* Session Management
+* Device Management
+
+⸻
+
+User Profile
+
+Users can
+
+* Edit profile
+* Upload avatar
+* Manage addresses
+* Save payment methods
+* View order history
+* View rewards
+* Manage gift cards
+* View reviews
+* Notification settings
+* Privacy settings
+
+⸻
+
+Business Directory
+
+Display
+
+* Nearby businesses
+* Categories
+* Ratings
+* Distance
+* Open now
+* Featured businesses
+* Popular businesses
+* AI recommendations
+
+Business profile contains
+
+* Photos
+* Description
+* Address
+* Phone
+* Website
+* Opening hours
+* Gallery
+* Menu
+* Reviews
+* Offers
+* Loyalty information
+* Gift cards
+
+⸻
+
+Product Catalog
+
+Support
+
+* Categories
+* Filters
+* Search
+* AI Search
+* Barcode Search
+* Voice Search
+* Recently viewed
+* Favorites
+* Recommendations
+
+Product page includes
+
+* Images
+* Video
+* Price
+* Description
+* Specifications
+* Reviews
+* Related products
+* Offers
+* Availability
+
+⸻
+
+Shopping
+
+Shopping Cart
+
+Wishlist
+
+Checkout
+
+Apple Pay
+
+Credit Cards
+
+Order Tracking
+
+Order History
+
+Invoices
+
+Refund Requests
+
+Digital Receipts
+
+⸻
+
+Loyalty Program
+
+Digital loyalty card
+
+Point accumulation
+
+Point redemption
+
+Tier system
+
+Achievements
+
+Rewards
+
+Coupons
+
+Badges
+
+Referral rewards
+
+Streak tracking
+
+⸻
+
+Gift Cards
+
+Purchase
+
+Send
+
+Receive
+
+Redeem
+
+Balance
+
+History
+
+Scheduled delivery
+
+QR Code
+
+Wallet integration
+
+⸻
+
+Offers
+
+Daily deals
+
+Exclusive offers
+
+Flash sales
+
+Personalized discounts
+
+Nearby promotions
+
+Seasonal campaigns
+
+Limited-time offers
+
+⸻
+
+Reviews
+
+Write review
+
+Photo review
+
+Rating
+
+Helpful votes
+
+Reply to reviews
+
+Report abuse
+
+AI summary of reviews
+
+⸻
+
+Blog
+
+Featured articles
+
+Categories
+
+Bookmarks
+
+Reading history
+
+Share
+
+Search
+
+AI summaries
+
+⸻
+
+AI Assistant
+
+Create an advanced AI assistant that can
+
+Recommend products
+
+Recommend businesses
+
+Answer questions
+
+Compare products
+
+Suggest restaurants
+
+Suggest offers
+
+Generate shopping lists
+
+Track spending
+
+Explain loyalty rewards
+
+Find nearby deals
+
+Generate travel plans
+
+Summarize reviews
+
+Summarize blogs
+
+Analyze uploaded images
+
+Analyze receipts
+
+Generate personalized recommendations
+
+Remember previous conversations
+
+Voice conversation
+
+Streaming responses
+
+Support multiple languages
+
+⸻
+
+AI Features
+
+Integrate
+
+OpenAI
+
+Anthropic
+
+Gemini
+
+DeepSeek
+
+Model routing
+
+Conversation memory
+
+Prompt templates
+
+Semantic search
+
+Embeddings
+
+RAG
+
+Knowledge base
+
+Document upload
+
+Image understanding
+
+Speech recognition
+
+Speech synthesis
+
+⸻
+
+Search
+
+Global Search
+
+AI Search
+
+Voice Search
+
+Image Search
+
+Nearby Search
+
+Search suggestions
+
+Trending searches
+
+Recent searches
+
+Search history
+
+⸻
+
+Notifications
+
+Push
+
+Local
+
+Live Activities
+
+Critical Alerts
+
+Order updates
+
+Offer reminders
+
+Loyalty reminders
+
+Gift card alerts
+
+AI recommendations
+
+⸻
+
+Maps
+
+Apple Maps
+
+Business locations
+
+Directions
+
+Nearby businesses
+
+Route planning
+
+Travel time
+
+Saved places
+
+⸻
+
+Analytics
+
+Customer analytics
+
+Business analytics
+
+Traffic analytics
+
+Revenue analytics
+
+Conversion analytics
+
+AI insights
+
+Behavior analytics
+
+Heatmaps
+
+⸻
+
+Admin Integration
+
+Manage
+
+Businesses
+
+Products
+
+Categories
+
+Offers
+
+Customers
+
+Orders
+
+Gift cards
+
+Reviews
+
+Blog
+
+Traffic analytics
+
+Loyalty programs
+
+Push notifications
+
+Moderation
+
+⸻
+
+Design System
+
+Apple Human Interface Guidelines
+
+SF Symbols
+
+Dynamic Type
+
+Dark Mode
+
+Light Mode
+
+Accessibility
+
+VoiceOver
+
+Large touch targets
+
+Adaptive layouts
+
+Smooth animations
+
+Glass materials
+
+Rounded corners
+
+Native navigation
+
+Interactive transitions
+
+Matched geometry effects
+
+Haptic feedback
+
+Skeleton loading
+
+Shimmer loading
+
+Empty states
+
+Error states
+
+Offline indicators
+
+⸻
+
+Performance
+
+120 FPS animations
+
+Cold launch under one second
+
+Offline-first
+
+Background sync
+
+Image caching
+
+Pagination
+
+Lazy loading
+
+Infinite scrolling
+
+Optimistic updates
+
+Memory efficient
+
+Battery efficient
+
+⸻
+
+Security
+
+Keychain
+
+Encrypted storage
+
+HTTPS
+
+Certificate pinning
+
+JWT
+
+OAuth
+
+Role-based permissions
+
+GDPR
+
+CCPA
+
+Secure logging
+
+Fraud detection
+
+Rate limiting
+
+⸻
+
+Database
+
+Entities
+
+User
+
+Customer
+
+Business
+
+Product
+
+Category
+
+Order
+
+Review
+
+Offer
+
+GiftCard
+
+LoyaltyProgram
+
+BlogPost
+
+TrafficAnalytics
+
+Notification
+
+Favorite
+
+ShoppingCart
+
+PaymentMethod
+
+Address
+
+Conversation
+
+Message
+
+Recommendation
+
+⸻
+
+Deliverables
+
+Generate a complete production-ready project including:
+
+* SwiftUI source code
+* Reusable UI component library
+* Design system
+* Complete navigation flow
+* Data models
+* SwiftData persistence
+* Backend API interfaces
+* Authentication
+* AI service layer
+* Repository layer
+* Networking
+* Error handling
+* Analytics
+* Unit tests
+* UI tests
+* Documentation
+* CI/CD configuration
+* App Store assets
+* Privacy Manifest
+* App Intents
+* Widgets
+* Live Activities
+* Siri Shortcuts
+* Deep Linking
+* Localization
+* Accessibility compliance
+
+The final result must be indistinguishable in quality from a top-tier App Store application, be modular, scalable to millions of users, and ready for production deployment.
