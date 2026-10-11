@@ -2,12 +2,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import NotFound from '@/pages/not-found';
-import { Route, Switch, Router as WouterRouter } from 'wouter';
+import { Route, Switch, Router as WouterRouter, useLocation, Redirect } from 'wouter';
 
+import { AuthProvider, useAuth } from '@/lib/auth';
+import { I18nProvider } from '@/lib/i18n';
 import { AppLayout } from '@/components/layout/AppLayout';
+
 import { Home } from '@/pages/Home';
-import { Businesses } from '@/pages/Businesses';
-import { BusinessProfile } from '@/pages/BusinessProfile';
 import { Products } from '@/pages/Products';
 import { ProductDetail } from '@/pages/ProductDetail';
 import { Offers } from '@/pages/Offers';
@@ -21,27 +22,41 @@ import { Favorites } from '@/pages/Favorites';
 import { Profile } from '@/pages/Profile';
 import { AIAssistant } from '@/pages/AIAssistant';
 import { Login } from '@/pages/Login';
+import { Dashboard } from '@/pages/Dashboard';
+import { BusinessDashboard } from '@/pages/BusinessDashboard';
+import { About } from '@/pages/About';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { staleTime: 30_000 } }
+});
+
+// Guard: redirects to /login if not authenticated
+function ProtectedRoute({ children, businessOnly = false }: { children: React.ReactNode; businessOnly?: boolean }) {
+  const { isAuthenticated, user, isLoading } = useAuth();
+  if (isLoading) return null;
+  if (!isAuthenticated) return <Redirect to="/login" />;
+  if (businessOnly && user?.role !== 'business' && user?.role !== 'admin') return <Redirect to="/" />;
+  return <>{children}</>;
+}
 
 function Router() {
   return (
     <Switch>
-      {/* Auth route without AppLayout usually, but let's say it has its own layout or uses AppLayout. 
-          For consistency with an app feel, let's keep it clean. */}
+      {/* Public full-screen pages */}
       <Route path="/login" component={Login} />
 
+      {/* Public pages — no auth required */}
       <Route path="/">
         <AppLayout><Home /></AppLayout>
       </Route>
-      
-      <Route path="/businesses">
-        <AppLayout><Businesses /></AppLayout>
-      </Route>
-      <Route path="/businesses/:id">
-        <AppLayout><BusinessProfile /></AppLayout>
-      </Route>
 
+      <Route path="/shop">
+        <AppLayout><Products /></AppLayout>
+      </Route>
+      <Route path="/shop/:id">
+        <AppLayout><ProductDetail /></AppLayout>
+      </Route>
+      {/* legacy alias */}
       <Route path="/products">
         <AppLayout><Products /></AppLayout>
       </Route>
@@ -53,14 +68,6 @@ function Router() {
         <AppLayout><Offers /></AppLayout>
       </Route>
 
-      <Route path="/loyalty">
-        <AppLayout><Loyalty /></AppLayout>
-      </Route>
-
-      <Route path="/gift-cards">
-        <AppLayout><GiftCards /></AppLayout>
-      </Route>
-
       <Route path="/blog">
         <AppLayout><Blog /></AppLayout>
       </Route>
@@ -68,24 +75,63 @@ function Router() {
         <AppLayout><BlogPostDetail /></AppLayout>
       </Route>
 
+      <Route path="/about">
+        <AppLayout><About /></AppLayout>
+      </Route>
+
+      {/* AI — public */}
+      <Route path="/ai">
+        <AppLayout><AIAssistant /></AppLayout>
+      </Route>
+
+      {/* Protected — requires login */}
       <Route path="/cart">
-        <AppLayout><Cart /></AppLayout>
+        <AppLayout>
+          <ProtectedRoute><Cart /></ProtectedRoute>
+        </AppLayout>
       </Route>
 
       <Route path="/orders">
-        <AppLayout><Orders /></AppLayout>
+        <AppLayout>
+          <ProtectedRoute><Orders /></ProtectedRoute>
+        </AppLayout>
+      </Route>
+
+      <Route path="/loyalty">
+        <AppLayout>
+          <ProtectedRoute><Loyalty /></ProtectedRoute>
+        </AppLayout>
+      </Route>
+
+      <Route path="/gift-cards">
+        <AppLayout>
+          <ProtectedRoute><GiftCards /></ProtectedRoute>
+        </AppLayout>
       </Route>
 
       <Route path="/favorites">
-        <AppLayout><Favorites /></AppLayout>
+        <AppLayout>
+          <ProtectedRoute><Favorites /></ProtectedRoute>
+        </AppLayout>
       </Route>
 
       <Route path="/profile">
-        <AppLayout><Profile /></AppLayout>
+        <AppLayout>
+          <ProtectedRoute><Profile /></ProtectedRoute>
+        </AppLayout>
       </Route>
 
-      <Route path="/ai">
-        <AppLayout><AIAssistant /></AppLayout>
+      <Route path="/dashboard">
+        <AppLayout>
+          <ProtectedRoute><Dashboard /></ProtectedRoute>
+        </AppLayout>
+      </Route>
+
+      {/* Business only */}
+      <Route path="/business">
+        <AppLayout>
+          <ProtectedRoute businessOnly><BusinessDashboard /></ProtectedRoute>
+        </AppLayout>
       </Route>
 
       <Route>
@@ -98,12 +144,16 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-          <Router />
-        </WouterRouter>
-        <Toaster />
-      </TooltipProvider>
+      <I18nProvider>
+        <AuthProvider>
+          <TooltipProvider>
+            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+              <Router />
+            </WouterRouter>
+            <Toaster />
+          </TooltipProvider>
+        </AuthProvider>
+      </I18nProvider>
     </QueryClientProvider>
   );
 }
