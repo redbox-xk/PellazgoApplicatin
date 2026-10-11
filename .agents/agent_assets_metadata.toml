@@ -1,0 +1,16 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "iVbPMwhDjCg--S3u5ehLM"
+uri = "file://BASE44_API_HANDOFF.md"
+type = "text"
+title = "Pellazgo API handoff for Base44"
+description = "Integration instructions, safe catalog endpoints, OpenAPI location, and current deployment/security limitations."
+logical_id = "0a997dad-28db-4705-affe-6aee76e1e4a6"
+content_hash = "sha256:2c0c819f019e0244057038dca027e6738c9af3c87b478e881da6ae33dc2f6cf1"
+size = 3416
+mtime_ms = 1791681476333
+storage_uri = "gcs://replit-rams-assets-riker/rams/assets/repl:00fad496-8ada-45f7-97ce-a9628d4857de/0a997dad-28db-4705-affe-6aee76e1e4a6/d8e0d9f0-38e9-4a8b-8b0b-6af55036e4f3"
+storage_version_token = "1791681486997573"
+content_type = "text/markdown"
